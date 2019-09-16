@@ -11,11 +11,13 @@ const app = express()
 mongoose.Promise = global.Promise
 mongoose.connect(config.DATABASE, { useNewUrlParser: true, useUnifiedTopology: true })
 
+// Models
+const { User } = require('./models/user')
+const { Book } = require('./models/book')
+
 // Middleware
 app.use(bodyParser.json())
 app.use(cookieParser())
-
-
 
 
 
