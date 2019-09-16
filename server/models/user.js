@@ -89,7 +89,33 @@ userSchema.methods.generateToken = function(cb) {
 
         if(err) return cb(err)
         cb(null, user)
-        
+
+    })
+}
+
+userSchema.methods.deleteToken = function(token, cb) {
+
+    const user = this
+
+    user.update({$unset: {token: 1}}, (err, user) => {
+        if(err) return cb(err)
+        cb(null, user)
+    })
+}
+
+// Statics
+userSchema.statics.findByToken = function(token, cb) {
+    
+    const user = this
+    const { SECRET } = config
+
+    jwt.verify(token, SECRET, function(err, decode) {
+
+        user.findOne({'_id': decode, token}, (err, user) => {
+            if(err) return cb(err)
+            cb(null, user)
+        })
+
     })
 }
 
